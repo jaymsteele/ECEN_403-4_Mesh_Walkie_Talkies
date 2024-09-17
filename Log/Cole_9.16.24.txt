@@ -1,0 +1,4 @@
+This week, I watched videos and did research on how to get our microcontroller (Launchpad) working with test software, and how they might interact.
+I just recieved the debugger (the main means of interfacing with the MCU) yesterday (Mon, 9/16), so I have not been able to get it working yet.
+This week, I will get them tested, working, and communicating with each other.
+My goal over the next 3 weeks is to have the mesh network functioning to send small packets of data between 2 MCUs.  This was originally my end-of-semester goal, but I realize it should be sooner since I will likely have to do a lot of debugging and fixing configurations, etc.
