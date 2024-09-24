@@ -1,0 +1,4 @@
+This week, I did not get much done while studying for midterms (of which I have multiple).
+In lab today, I successfully completed the (rather tedious) process of getting Hello, World! to run via UART.  I got it to run repeatedly.
+This week, I will be getting my "blinky" program to work.  This needs to be done (so that I know how MCU works) before I move onto the Wi-SUN configuration I wanted to do.
+This week, I am also working on FSR & ICD, which has taken some time.
