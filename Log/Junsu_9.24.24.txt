@@ -1,0 +1,7 @@
+Worked on finishing up my Altium Subsystem intro project
+
+Debugged all of the errors from DRC
+
+Watched YouTube videos for how to set up converter design for charging LiPo Battery
+
+Currently working on finishing up FSR, ICD, execution and validation plan. 
