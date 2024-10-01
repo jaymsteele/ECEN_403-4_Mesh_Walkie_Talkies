@@ -1,0 +1,1 @@
+This week I am attempting to interface the LCD with the launchpad. This was way more difficult than I initially thought and I will definitely need some help maybe in office hours or outside of lab. I also downloaded the Opus Codec to my CCS. In all honesty, I am very confused and what I thought would be easy edmos are going to be way harder than I initially thought. 
