@@ -1,7 +1,0 @@
-I just have CAM/gerber files left to make on Altium Introduction Project
-
-Mainly focused on finishing up the FSR and ICD
-
-Researched tradeoffs/features/pros/cons of recharging IC's and battery protection IC's
-
-I had an exam last wednesday and 2 exams this week to study for so I couldn't get much done. I will work extra this week to finish up to intro project, finish up the presentation, and start workingon the charging PCB for our battery. 
