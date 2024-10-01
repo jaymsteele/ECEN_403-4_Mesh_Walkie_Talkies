@@ -1,0 +1,2 @@
+Over the last week, I've been working on the introduction project.  I'm getting close to finishing the Blinky application.
+After Blinky is complete, my goal is to get two MCUs communicating with each other by Friday 10/11.
