@@ -1,0 +1,7 @@
+Created the schematics for step down converter 1.8Vout as well as linear regulator to 1.8 Vout
+Created the schematic for step down converter 2.8 Vout 
+Created the schematic for step up converter 5 Vout
+
+Started creating schematic for the battery charger IC
+
+Am struggling to actually run simulations on Altium to ensure the schematics work as expected. 
