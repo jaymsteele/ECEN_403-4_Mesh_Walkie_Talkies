@@ -1,0 +1,8 @@
+Finished creating schematics and simulations for the voltage regulators. 
+Couldn't figure out how to use the simulation on Altium and simulated most TI parts on TINA TI. 
+
+Going to look into Multisim, or LTSPICE to try and simulate the battery charger and the battery protection IC. 
+
+Waiting for parts to come in to start simulating on a breadboard
+
+I want to finish up schematics and start routing this week. 
