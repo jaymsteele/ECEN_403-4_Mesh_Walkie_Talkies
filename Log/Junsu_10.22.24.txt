@@ -1,0 +1,7 @@
+Moved on to routing the PCB. All of the connections are made, I just need to change the size of the traces. 
+
+Currently, DRC passes with no errors. 
+
+Fixed all of the footprint errors some of the footprint were gettng from the Design Rules. 
+
+This week I need to finish up with the trace widths and hopefully be ready to order PCB.
