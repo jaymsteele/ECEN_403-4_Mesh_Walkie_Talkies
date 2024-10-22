@@ -1,0 +1,7 @@
+Over the last week, including the Blitz, I've done a few things relating to the mesh subsystem:
+1) As reported last week in lab, I got the MCUs to talk to each other with random packets in set intervals.  These were one-way transmissions.
+This week, I've advanced a few steps.  One advancement was I got each MCU to allow for bi-directional communication over TI's propriety RF & UART.  When plugged into the system, they'd send/recieve whatever text I typed, and could switch between send/receive instantly.
+On the aspect of Mesh, I was able to accomplish this using rfEcho, but this didn't allow for bi-directionality quite yet, and is still limited to either Tx or Rx depending on files loaded.
+My plan is to, over the next couple weeks, work on integrating these programs/functions to have bi-directionality with Mesh.
+It looks like Wi-SUN will be a much more complicated system to use than TI's proprietary RF protocool.  Since all walkie talkies will use TI MCU, this shouldn't be a problem, and should allow for greater internal capabilities despite not having as wide a capabilities set.
+I'm also looking into how to integrate the CC3200AudBoost expansion card into the transmission, since it can buffer packets & send those easily.  Integrating that code with my code will be ~90% project completion.
