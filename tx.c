@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <unistd.h>  // Include for usleep
+#include <stdio.h>
 
 /* TI Drivers */
 #include <ti/drivers/rf/RF.h>
@@ -26,6 +27,8 @@
 #define NUM_APPENDED_BYTES  2
 #define RECEIVING_HOLD_TIME (uint32_t)(400000*2.0f) // 2 seconds hold in receiving mode
 I2C_Handle i2cHandle;  // Global I2C handle
+#define WALKIE_ID 2  // Change this for each device (e.g., 1, 2, 3, ...)
+
 /***** Variable declarations *****/
 static RF_Object rfObject;
 static RF_Handle rfHandle;
@@ -39,23 +42,7 @@ static uint8_t txPacket[PAYLOAD_LENGTH];
 static uint8_t rxPacket[PAYLOAD_LENGTH + NUM_APPENDED_BYTES - 1];
 static uint16_t seqNumber;
 static volatile bool bRxSuccess = false;
-void displayDefaultMessage(void);
-void displayTransmittingMessage(void);
-void displayReceivingMessage(void);
 
-void displayDefaultMessage(void) {
-    LCD_clear(i2cHandle);
-    LCD_print(i2cHandle, "Push To Talk: W1");
-}
-
-void displayTransmittingMessage(void) {
-    LCD_clear(i2cHandle);
-    LCD_print(i2cHandle, "Transmitting...");
-}
-void displayReceivingMessage(void) {
-    LCD_clear(i2cHandle);
-    LCD_print(i2cHandle, "Receiving...");
-}
 
 
 typedef enum {
@@ -63,24 +50,30 @@ typedef enum {
     LCD_TRANSMITTING,
     LCD_RECEIVING
 } LCD_State;
-void updateLCD(LCD_State newState);
+void updateLCD(LCD_State newState, uint8_t senderId);
 
 LCD_State currentLCDState = LCD_RECEIVING;
 
-void updateLCD(LCD_State newState) {
+void updateLCD(LCD_State newState, uint8_t senderId) {
     if (currentLCDState != newState) {
         currentLCDState = newState;  // Update state
-
         LCD_clear(i2cHandle);
+
         if (newState == LCD_TRANSMITTING) {
             LCD_print(i2cHandle, "Transmitting...");
         } else if (newState == LCD_RECEIVING) {
-            LCD_print(i2cHandle, "Receiving...");
+            char lcdMessage[16];
+            snprintf(lcdMessage, sizeof(lcdMessage), "Receiving W%d", senderId);
+            LCD_print(i2cHandle, lcdMessage);
         } else {
-            LCD_print(i2cHandle, "Push To Talk: W1");
+            char lcdMessage[20];
+            snprintf(lcdMessage, sizeof(lcdMessage), "Push To Talk: W%d", WALKIE_ID);
+            LCD_print(i2cHandle, lcdMessage);
         }
+
     }
 }
+
 /***** Function definitions *****/
 void *mainThread(void *arg0) {
     uint32_t curtime;
@@ -129,20 +122,22 @@ void *mainThread(void *arg0) {
     RF_postCmd(rfHandle, (RF_Op*)&RF_cmdFs, RF_PriorityNormal, NULL, 0);
 
     curtime = RF_getCurrentTime();
-    updateLCD(LCD_DEFAULT);
+    updateLCD(LCD_DEFAULT, 0);
     uint32_t lastRxTime = 0;
     while (1) {
         if (GPIO_read(CONFIG_GPIO_BUTTON_0) == 0) {
             // Transmitting Mode
-            updateLCD(LCD_TRANSMITTING);
+            updateLCD(LCD_TRANSMITTING, 0);
             GPIO_toggle(CONFIG_GPIO_GLED);
             GPIO_write(CONFIG_GPIO_RLED, CONFIG_GPIO_LED_OFF);
 
-            txPacket[0] = (uint8_t)(seqNumber >> 8);
-            txPacket[1] = (uint8_t)(seqNumber++);
-            for (uint8_t i = 2; i < PAYLOAD_LENGTH; i++) {
+            txPacket[0] = WALKIE_ID;  // First byte is the walkie ID
+            txPacket[1] = (uint8_t)(seqNumber >> 8);
+            txPacket[2] = (uint8_t)(seqNumber++);
+            for (uint8_t i = 3; i < PAYLOAD_LENGTH; i++) {
                 txPacket[i] = rand();
             }
+
 
             curtime += PACKET_INTERVAL;
             RF_cmdPropTx.startTime = curtime;
@@ -154,19 +149,23 @@ void *mainThread(void *arg0) {
             RF_EventMask result = RF_pendCmd(rfHandle, rxCmdHandle, RF_EventRxEntryDone);
 
             if (result & RF_EventRxEntryDone) {
-                // Receiving Mode
-                if (currentLCDState != LCD_RECEIVING) {
-                    updateLCD(LCD_RECEIVING);
-                }
                 GPIO_write(CONFIG_GPIO_GLED, CONFIG_GPIO_LED_OFF);
                 GPIO_write(CONFIG_GPIO_RLED, CONFIG_GPIO_LED_ON);
 
-                // Retrieve packet
-                currentDataEntry = RFQueue_getDataEntry();
-                packetLength = *(uint8_t *)(&(currentDataEntry->data));
-                packetDataPointer = (uint8_t *)(&(currentDataEntry->data) + 1);
-                memcpy(rxPacket, packetDataPointer, (packetLength + 1));
-                RFQueue_nextEntry();
+                   // Retrieve packet
+                   currentDataEntry = RFQueue_getDataEntry();
+                   packetLength = *(uint8_t *)(&(currentDataEntry->data));
+                   packetDataPointer = (uint8_t *)(&(currentDataEntry->data) + 1);
+                   memcpy(rxPacket, packetDataPointer, (packetLength + 1));
+                   RFQueue_nextEntry();
+
+                   // Extract sender ID AFTER the packet is copied
+                   uint8_t senderId = rxPacket[0];
+
+                   // Update LCD only if necessary
+                   if (currentLCDState != LCD_RECEIVING) {
+                       updateLCD(LCD_RECEIVING, senderId);
+                   }
 
                 // Forward received packet
                 memcpy(txPacket, rxPacket, packetLength);
@@ -181,8 +180,9 @@ void *mainThread(void *arg0) {
                         GPIO_write(CONFIG_GPIO_GLED, CONFIG_GPIO_LED_OFF);
                         GPIO_write(CONFIG_GPIO_RLED, CONFIG_GPIO_LED_ON);
 
-                        currentDataEntry = RFQueue_getDataEntry();
-                        packetLength = *(uint8_t *)(&(currentDataEntry->data));
+                        if (packetLength > PAYLOAD_LENGTH) {
+                            packetLength = PAYLOAD_LENGTH;  // Prevent buffer overflow
+                        }
                         packetDataPointer = (uint8_t *)(&(currentDataEntry->data) + 1);
                         memcpy(rxPacket, packetDataPointer, (packetLength + 1));
                         RFQueue_nextEntry();
@@ -193,13 +193,22 @@ void *mainThread(void *arg0) {
             }
             else if (RF_getCurrentTime() - lastRxTime >= RECEIVING_HOLD_TIME) {
                 // Only switch to default mode AFTER the receiving hold time has expired
-                updateLCD(LCD_DEFAULT);
+                updateLCD(LCD_DEFAULT, 0);
                 GPIO_toggle(CONFIG_GPIO_GLED);
                 GPIO_toggle(CONFIG_GPIO_RLED);
-
                 // Restart RX command to keep listening for packets
-                rxCmdHandle = RF_postCmd(rfHandle, (RF_Op*)&RF_cmdPropRx, RF_PriorityNormal, NULL, RF_EventRxEntryDone);
+
+
+                //rxCmdHandle = RF_postCmd(rfHandle, (RF_Op*)&RF_cmdPropRx, RF_PriorityNormal, NULL, RF_EventRxEntryDone);
+                RF_yield(rfHandle);   // Release RF resources
+                RF_close(rfHandle);   // Close RF to reset internal state
+
+                       // Reinitialize RF
+                rfHandle = RF_open(&rfObject, &RF_prop, (RF_RadioSetup*)&RF_cmdPropRadioDivSetup, &rfParams);
+                RF_postCmd(rfHandle, (RF_Op*)&RF_cmdFs, RF_PriorityNormal, NULL, 0);
+
             }
         }
     }
+
 }
