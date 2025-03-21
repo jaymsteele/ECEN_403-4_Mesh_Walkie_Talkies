@@ -20,8 +20,8 @@
 #include <ti_radio_config.h>
 
 /***** Defines *****/
-#define PAYLOAD_LENGTH      30
-#define PACKET_INTERVAL     (uint32_t)(400000*0.2f)  // 1000ms
+#define PAYLOAD_LENGTH      255
+#define PACKET_INTERVAL     (uint32_t)(40000*0.2f)  // 20ms
 #define RX_TIMEOUT          (uint32_t)(400000*0.5f)  // 500ms
 #define NUM_DATA_ENTRIES    2
 #define NUM_APPENDED_BYTES  2
