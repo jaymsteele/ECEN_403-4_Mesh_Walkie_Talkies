@@ -1,0 +1,3 @@
+Layer Pairs Export File for PCB: E:\SCHOOL\Capstone\ALTIUM\ECEN404_FinalPCB\FINAL_Walkie_Talkie_POWER_PCB.PcbDoc
+LayersSetName=Top_Bot_Thru_Holes|DrillFile=final_walkie_talkie_power_pcb-roundholes.txt|DrillLayers=gtl,gp1,gp2,gbl
+LayersSetName=Top_Bot_Slot_Holes|DrillFile=final_walkie_talkie_power_pcb-slotholes.txt|DrillLayers=gtl,gp1,gp2,gbl

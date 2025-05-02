@@ -1,0 +1,20 @@
+----------------------------------------------------------------------------------------------------------------------------------
+NCDrill File Report For: FINAL_Walkie_Talkie_POWER_PCB.PcbDoc   2/12/2025  6:54:20 PM
+----------------------------------------------------------------------------------------------------------------------------------
+
+Layer Pair : Top Layer to Bottom Layer
+ASCII RoundHoles File : FINAL_Walkie_Talkie_POWER_PCB-RoundHoles.TXT
+ASCII SlotHoles File : FINAL_Walkie_Talkie_POWER_PCB-SlotHoles.TXT
+
+Tool       Hole Size               Hole Tolerance               Hole Type       Hole Count   Plated         Tool Travel
+----------------------------------------------------------------------------------------------------------------------------------
+T1      0.254mm (10mil)                                           Round             4         PTH        3.00mm (0.12inch)
+T2      0.5mm (20mil)                                             Round             39        PTH        277.18mm (10.91inch)
+T3      0.6mm (24mil)                                             Slot              4         PTH        34.90mm (1.37inch)
+T4      0.7mm (28mil)                                             Round             2         PTH        2.00mm (0.08inch)
+T5      1.02mm (40mil)                                            Round             20        PTH        48.26mm (1.90inch)
+T6      3.2mm (126mil)                                            Round             4         NPTH       161.65mm (6.36inch)
+----------------------------------------------------------------------------------------------------------------------------------
+Totals                                                                              73
+
+Total Processing Time (hh:mm:ss) : 00:00:00

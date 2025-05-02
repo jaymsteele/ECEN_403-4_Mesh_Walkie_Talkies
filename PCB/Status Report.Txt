@@ -1,0 +1,22 @@
+Output: Gerber Files
+Type  : Gerber
+From  : Variant [[No Variations]] of Project [Free Documents]
+   Generated File[FINAL_Walkie_Talkie_POWER_PCB.GTO]
+   Generated File[FINAL_Walkie_Talkie_POWER_PCB.GTP]
+   Generated File[FINAL_Walkie_Talkie_POWER_PCB.GTS]
+   Generated File[FINAL_Walkie_Talkie_POWER_PCB.GTL]
+   Generated File[FINAL_Walkie_Talkie_POWER_PCB.GP1]
+   Generated File[FINAL_Walkie_Talkie_POWER_PCB.GP2]
+   Generated File[FINAL_Walkie_Talkie_POWER_PCB.GBL]
+   Generated File[FINAL_Walkie_Talkie_POWER_PCB.GBS]
+   Generated File[FINAL_Walkie_Talkie_POWER_PCB.GBP]
+   Generated File[FINAL_Walkie_Talkie_POWER_PCB.GBO]
+   Generated File[FINAL_Walkie_Talkie_POWER_PCB.GM]
+   Generated File[FINAL_Walkie_Talkie_POWER_PCB.EXTREP]
+   Generated File[FINAL_Walkie_Talkie_POWER_PCB.REP]
+
+
+Files Generated   : 13
+Documents Printed : 0
+
+Finished Output Generation At 7:00:54 PM On 2/12/2025
